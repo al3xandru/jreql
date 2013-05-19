@@ -3,6 +3,7 @@ package com.mypopescu.jreql;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -81,10 +82,16 @@ public class TestSingleResultResponse {
         assertEquals("str", rs.getString());
     }
 
-    @Ignore("not implemented yet")
     @Test
     public void getIntArray() {
+        ResultSet rs= getResultSet(ReqlProto.Datum.newBuilder()
+            .addRArray(ReqlProto.Datum.newBuilder().setRNum(1).build())
+            .addRArray(ReqlProto.Datum.newBuilder().setRNum(2).build())
+            .addRArray(ReqlProto.Datum.newBuilder().setRNum(72).build())
+        );
+        rs.first();
 
+        assertArrayEquals(new int[] {1, 2, 72}, rs.getIntArray());
     }
 
     @Ignore("not implemented yet")

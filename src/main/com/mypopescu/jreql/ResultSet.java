@@ -76,19 +76,43 @@ public class ResultSet {
     }
 
     public int[] getIntArray() {
-        return null;
+        List<ReqlProto.Datum> elements = m_data.get(m_currentIndex).getRArrayList();
+        int[] result= new int[elements.size()];
+        for(int i=0; i < elements.size(); i++) {
+            result[i] = (int) elements.get(i).getRNum();
+        }
+
+        return result;
     }
 
     public double[] getDoubleArray() {
-        return null;
+        List<ReqlProto.Datum> elements = m_data.get(m_currentIndex).getRArrayList();
+        double[] result= new double[elements.size()];
+        for(int i=0; i < elements.size(); i++) {
+            result[i] = elements.get(i).getRNum();
+        }
+
+        return result;
     }
 
     public boolean[] getBooleanArray() {
-        return null;
+        List<ReqlProto.Datum> elements = m_data.get(m_currentIndex).getRArrayList();
+        boolean[] result= new boolean[elements.size()];
+        for(int i=0; i < elements.size(); i++) {
+            result[i] = elements.get(i).getRBool();
+        }
+
+        return result;
     }
 
     public String[] getStringArray() {
-        return null;
+        List<ReqlProto.Datum> elements = m_data.get(m_currentIndex).getRArrayList();
+        String[] result= new String[elements.size()];
+        for(int i=0; i < elements.size(); i++) {
+            result[i] = elements.get(i).getRStr();
+        }
+
+        return result;
     }
 
     @SuppressWarnings("unchecked")
