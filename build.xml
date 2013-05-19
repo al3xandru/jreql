@@ -1,0 +1,124 @@
+<project name="ReJ" default="dist" basedir=".">
+    <description>
+        A RethinkDB Java driver
+    </description>
+    <property file="local.properties" />
+    <!-- set global properties for this build -->
+    <property name="proto.exec" value="/usr/local/bin/protoc" />
+
+    <property name="src" location="src"/>
+    <property name="src.main" location="${src}/main"/>
+
+    <property name="lib" location="lib" />
+
+    <property name="build" location="${basedir}/build"/>
+    <property name="build.classes" location="${build}/classes"/>
+    <property name="build.tests" location="${build}/tests" />
+    <property name="build.proto" location="${build}/proto"/>
+    <property name="build.gen" location="${build}/generated" />
+
+
+    <property name="dist"  location="dist"/>
+
+    <path id="compile.cp">
+        <fileset dir="${lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+    <target name="init" description="folder setup">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.classes}" />
+        <mkdir dir="${build.tests}" />
+    </target>
+
+    <!-- protobuf -->
+    <target name="-proto:init" depends="init">
+        <mkdir dir="${build.proto}" />
+        <mkdir dir="${build.gen}" />
+    </target>
+
+    <target name="proto:get" depends="-proto:init">
+        <get src="https://raw.github.com/rethinkdb/rethinkdb/next/src/rdb_protocol/ql2.proto"
+             dest="${build.proto}/ql2.proto.new" />
+        <!--<echo message="Proto diff: ${newprotofile}" />-->
+        <condition property="new.protofile">
+            <not>
+                <filesmatch file1="${build.proto}/ql2.proto"
+                            file2="${build.proto}/ql2.proto.new"
+                />
+            </not>
+        </condition>
+    </target>
+    <target name="-proto:merge" depends="proto:get" if="new.protofile">
+        <tstamp>
+            <format property="diff.time"
+                    pattern="MM/dd/yyyy hh:mmaa" />
+        </tstamp>
+        <echo   message="${line.separator}${line.separator}Diff: ${diff.time}${line.separator}${line.separator}"
+                file="${build.proto}/ql2.diff.txt"
+                append="true" />
+        <exec   executable="/usr/bin/diff"
+                failonerror="false"
+                output="${build.proto}/ql2.diff.txt"
+                append="true">
+            <arg value="${build.proto}/ql2.proto" />
+            <arg value="${build.proto}/ql2.proto.new" />
+        </exec>
+        <echo   message="New ql2.proto file available. Diff written to: ${build.proto}/ql2.diff.txt" />
+
+        <move file="${build.proto}/ql2.proto.new" tofile="${build.proto}/ql2.proto" />
+        <concat dest="${build.proto}/ql2_java.proto">
+            <header filtering="no" trimleading="yes">
+                option java_package = "com.mypopescu.rej";
+                option java_outer_classname = "RqlProtocol";
+            </header>
+            <path path="${build.proto}/ql2.proto" />
+        </concat>
+    </target>
+    <target name="-proto:clean" unless="new.protofile">
+        <delete file="${build.proto}/ql2.proto.new" />
+    </target>
+    <target name="proto" depends="-proto:merge,-proto:clean" if="new.protofile" description="generates protobufs source files">
+        <exec executable="${proto.exec}">
+            <arg value="--version" />
+        </exec>
+        <exec executable="${proto.exec}">
+            <arg value="--java_out=${build.gen}" />
+            <arg value="--proto_path=${build.proto}" />
+            <arg value="${build.proto}/ql2_java.proto" />
+        </exec>
+    </target>
+
+    <target name="compile" depends="init"
+            description="compile the source">
+        <javac destdir="${build.classes}"
+               classpathref="compile.cp"
+               debug="on"
+               source="1.6"
+               target="1.6"
+               includeantruntime="false">
+            <src path="${src.main}" />
+            <src path="${build.gen}" />
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile"
+            description="generate the distribution" >
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}/lib"/>
+
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <jar jarfile="${dist}/lib/rej-${DSTAMP}.jar" basedir="${build}"/>
+    </target>
+
+    <target name="clean"
+            description="clean up" >
+        <delete dir="${build.classes}"/>
+        <delete dir="${build.tests}" />
+    </target>
+</project>
