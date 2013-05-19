@@ -1,6 +1,10 @@
 **Note**: This project is work in progress. As features are added
 these will be documented here.
 
+**Any contributions are not only welcome but much appreciated!**
+
+# jreql - Java driver for RethinkDB #
+
 A Java driver for [RethinkDB](http://www.rethinkdb.com), the open source distributed JSON
 document database with a pleasant and powerful query language.
 
@@ -36,7 +40,6 @@ document database with a pleasant and powerful query language.
     -   [r.expr](http://www.rethinkdb.com/api/#py:control_structures-expr)
     -   lambda functions
 
-**Any contributions are not only welcome but much appreciated!**
 
 
 
