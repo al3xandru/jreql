@@ -28,5 +28,15 @@ document database with a pleasant and powerful query language.
 3.  Filtering with `Criteria`
 4.  Lambda-functions for `filter`, `map`, etc.
 
+## What is needed ##
+
+1.  Maven build -- if anyone is interested in contributing a Maven build, I'd be extremely grateful :pray:
+2.  Any ideas about how to hande:
+
+    -   [r.expr](http://www.rethinkdb.com/api/#py:control_structures-expr)
+    -   lambda functions
+
+**Any contributions are not only welcome but much appreciated!**
+
 
 
