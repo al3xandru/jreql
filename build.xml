@@ -74,8 +74,8 @@
         <move file="${build.proto}/ql2.proto.new" tofile="${build.proto}/ql2.proto" />
         <concat dest="${build.proto}/ql2_java.proto">
             <header filtering="no" trimleading="yes">
-                option java_package = "com.mypopescu.rej";
-                option java_outer_classname = "RqlProtocol";
+                option java_package = "com.mypopescu.jreql";
+                option java_outer_classname = "ReqlProto";
             </header>
             <path path="${build.proto}/ql2.proto" />
         </concat>
@@ -83,7 +83,7 @@
     <target name="-proto:clean" unless="new.protofile">
         <delete file="${build.proto}/ql2.proto.new" />
     </target>
-    <target name="proto" depends="-proto:merge,-proto:clean" if="new.protofile" description="generates protobufs source files">
+    <target name="proto" depends="-proto:merge,-proto:clean" description="generates protobufs source files">
         <exec executable="${proto.exec}">
             <arg value="--version" />
         </exec>
