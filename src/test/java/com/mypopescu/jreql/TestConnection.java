@@ -1,19 +1,24 @@
 package com.mypopescu.jreql;
 
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 
 /**
@@ -28,6 +33,20 @@ public class TestConnection {
     public TestConnection(String host, int port) {
         m_host = host;
         m_port = port;
+    }
+
+    @BeforeClass
+    public static void checkServers() throws IOException
+    {
+        // Use parameterized data
+        Collection<Object[]> pData = data();
+
+        for(Iterator iter = pData.iterator(); iter.hasNext(); ){
+            Object[] entry = (Object[]) iter.next();
+            InetAddress inet = InetAddress.getByName((String) entry[0]);
+            assumeTrue(inet.isReachable(5000));
+        }
+
     }
 
     @Ignore("it fails to catch its own exception")

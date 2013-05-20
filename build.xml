@@ -1,4 +1,4 @@
-<project name="ReJ" default="dist" basedir=".">
+<project name="ReJ" default="maven" basedir=".">
     <description>
         A RethinkDB Java driver
     </description>
@@ -26,6 +26,12 @@
         </fileset>
     </path>
 
+    <target name="maven" description="Execute maven build">
+        <exec executable="mvn">
+            <arg value="clean" />
+            <arg value="install" />
+        </exec>
+    </target>
 
     <target name="init" description="folder setup">
         <!-- Create the time stamp -->
