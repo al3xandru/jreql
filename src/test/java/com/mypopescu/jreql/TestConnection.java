@@ -12,6 +12,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertFalse;
@@ -37,8 +38,15 @@ public class TestConnection {
     @BeforeClass
     public static void checkServers() throws IOException
     {
-        InetAddress inet = InetAddress.getByName("192.168.97.162");
-        assumeTrue(inet.isReachable(5000));
+        // Use parameterized data
+        Collection<Object[]> pData = data();
+
+        for(Iterator iter = pData.iterator(); iter.hasNext(); ){
+            Object[] entry = (Object[]) iter.next();
+            InetAddress inet = InetAddress.getByName((String) entry[0]);
+            assumeTrue(inet.isReachable(5000));
+        }
+
     }
 
     @Ignore("it fails to catch its own exception")
