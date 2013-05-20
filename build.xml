@@ -119,7 +119,7 @@
         <mkdir dir="${dist}/lib"/>
 
         <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-        <jar jarfile="${dist}/lib/rej-${DSTAMP}.jar" basedir="${build}"/>
+        <jar jarfile="${dist}/lib/jreql-${DSTAMP}.jar" basedir="${build}"/>
     </target>
 
     <target name="clean"

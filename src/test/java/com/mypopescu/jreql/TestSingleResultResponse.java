@@ -6,6 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,13 +21,12 @@ public class TestSingleResultResponse {
             ;
 
         Connection connection = new Connection("example.org", 28015);
-        ResultSet rs = connection.parseResponse(null,
+
+        return connection.parseResponse(null,
             ReqlProto.Query.QueryType.START,
             null,
             -1,
             builder.build());
-
-        return rs;
     }
 
     @Test
@@ -40,11 +40,11 @@ public class TestSingleResultResponse {
     }
 
     @Test
-    public void getBoolean() {
+    public void getBool() {
         ResultSet rs= getResultSet(ReqlProto.Datum.newBuilder().setRBool(false));
         rs.first();
 
-        assertFalse(rs.getBoolean());
+        assertFalse(rs.getBool());
     }
 
     @Test
@@ -114,9 +114,25 @@ public class TestSingleResultResponse {
     public void getLongArray() {
     }
 
-    @Ignore("not implemented yet")
     @Test
     public void getObjectBasic() {
+        ResultSet rs= getResultSet(ReqlProto.Datum.newBuilder()
+            .addRObject(ReqlProto.Datum.AssocPair.newBuilder().setKey("anInt").setVal(ReqlProto.Datum.newBuilder().setRNum(8).build()).build())
+            .addRObject(ReqlProto.Datum.AssocPair.newBuilder().setKey("aDouble").setVal(ReqlProto.Datum.newBuilder().setRNum(8.88).build()).build())
+            .addRObject(ReqlProto.Datum.AssocPair.newBuilder().setKey("aBool").setVal(ReqlProto.Datum.newBuilder().setRBool(true).build()).build())
+            .addRObject(ReqlProto.Datum.AssocPair.newBuilder().setKey("aStr").setVal(ReqlProto.Datum.newBuilder().setRStr("stringvalue").build()).build())
+            .addRObject(ReqlProto.Datum.AssocPair.newBuilder().setKey("aNull").build())
+        );
+        rs.first();
+
+        JsonObject obj= rs.getObj();
+
+        assertNotNull(obj);
+        assertEquals(8, obj.getInt("anInt"));
+        assertEquals(8.88, obj.getDouble("aDouble"), 0);
+        assertEquals(true, obj.getBool("aBool"));
+        assertEquals("stringvalue", obj.getString("aStr"));
+        assertTrue(obj.isNull("aNull"));
     }
 
     @Ignore("not implemented yet")
