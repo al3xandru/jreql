@@ -64,7 +64,7 @@ public class ResultSet {
     }
 
     public long getLong() {
-        return (int) m_data.get(m_currentIndex).getRNum();
+        return (long) m_data.get(m_currentIndex).getRNum();
     }
 
     public double getDouble() {
