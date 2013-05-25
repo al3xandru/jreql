@@ -39,7 +39,7 @@ document database with a pleasant and powerful query language.
 
 1.  Maven build -- if anyone is interested in contributing a Maven build, I'd be extremely grateful :pray:
 
-    There's already a `pom.xml` contributed by @griphiam.
+    There's already a `pom.xml` contributed by [@griphiam](https://github.com/griphiam).
 
 2.  Any ideas about how to handle:
 
