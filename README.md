@@ -16,6 +16,9 @@ document database with a pleasant and powerful query language.
    and generates the sources
     2.  compile, etc.
 
+    _Note_: the project is trying to use the latest protobuf definition as ReQL evolves pretty fast. Once a
+    stable version is completed, it will start using the protobufs in the RethinkDB release versions.
+
 2.  [Connection](https://github.com/al3xandru/jreql/blob/master/src/main/com/mypopescu/jreql/Connection.java): sends,
     receives, and parses responses.
 
@@ -35,7 +38,10 @@ document database with a pleasant and powerful query language.
 ## What is needed ##
 
 1.  Maven build -- if anyone is interested in contributing a Maven build, I'd be extremely grateful :pray:
-2.  Any ideas about how to hande:
+
+    There's already a `pom.xml` contributed by @griphiam.
+
+2.  Any ideas about how to handle:
 
     -   [r.expr](http://www.rethinkdb.com/api/#py:control_structures-expr)
     -   lambda functions
