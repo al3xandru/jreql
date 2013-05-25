@@ -1,4 +1,4 @@
-<project name="ReJ" default="maven" basedir=".">
+<project name="jreql" default="dist" basedir=".">
     <description>
         A RethinkDB Java driver
     </description>
