@@ -1,7 +1,4 @@
-**Note**: This project is work in progress. As features are added
-these will be documented here.
-
-**Any contributions are not only welcome but much appreciated!**
+**Note**: Unfortunately this project is no longer under development.
 
 # jreql - Java driver for RethinkDB #
 
